@@ -1,4 +1,7 @@
 import express from "express";
+import bodyParser from "body-parser";
+import path from "path"
+
 
 
 const router = express.Router();
@@ -6,6 +9,11 @@ const router = express.Router();
 const app = express();
 
 const PORT = 8000
+
+app.use(bodyParser.urlencoded({extended: true}))
+
+app.use(express.static('views'));
+
 
 
 let productos = 
@@ -39,24 +47,30 @@ let productos =
 app.use("/api",router)
 
 router.get("/productos",(req,res)=>{
-    res.send(productos)
+
+
+    let cosas = JSON.stringify(productos)
+    //res.send(productos)
+    res.render("inicio.pug",{cosas})
 })
 
-router.post("/productos",(req,res)=>{
+/*router.post("/productos",(req,res)=>{
 
-  function newProduct(title,price,id){
+  function newProduct(title,price){
+    
     let productoNuevo = {
       title: title,
       price: price,
-      id: id
+      id: productos.length + 1
     }
     productos.push(productoNuevo)
     res.send(productoNuevo)
-  
+    console.log(productoNuevo)
   }
 
-  newProduct("juguete",300,4)
-})
+  newProduct("juguete",300)
+  
+})*/
 
 router.put("/productos/:id",(req,res)=>{
 
@@ -116,3 +130,26 @@ const server = app.listen(PORT, () => {
     console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
  })
  server.on("error", error => console.log(`Error en servidor ${error}`))
+
+
+
+
+ app.post('/save', (req,res) => {
+  let listaDeObjetos = {
+    title: req.body.title,
+    price: req.body.price,
+    id: productos.length + 1,
+
+  }
+
+  productos.push( listaDeObjetos )
+
+  res.send(listaDeObjetos)
+
+  console.log(listaDeObjetos)
+  console.log(productos)
+})
+ 
+
+app.set('views', path.join('views'));
+app.set('view engine', '')

@@ -1,0 +1,12 @@
+extends layout 
+
+block inicio 
+    h2= `Estos son los productos: ${cosas}`
+    h1="ingrese su producto"
+    form(action="/save" method='post')
+        h1='title:'
+        input(type="text" name='title') 
+        h1='price:'
+        input(type="number" name='number')
+        button(type="submit") SEND
+    
