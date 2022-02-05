@@ -135,18 +135,25 @@ const server = app.listen(PORT, () => {
 
 
  app.post('/save', (req,res) => {
-  let listaDeObjetos = {
+  let nuevoItem = {
     title: req.body.title,
     price: req.body.price,
     id: productos.length + 1,
 
   }
 
-  productos.push( listaDeObjetos )
+  productos.push( nuevoItem)
 
-  res.send(listaDeObjetos)
+  let productosString = JSON.stringify(productos)
 
-  console.log(listaDeObjetos)
+  res.send(`<body>
+    <h1>Lista de Productos</h1>
+    <p>${productosString}</p>
+    <a href="/api/productos">agregar otro producto</a>
+  </body>`)
+  
+
+  console.log(nuevoItem)
   console.log(productos)
 })
  
